@@ -1,0 +1,51 @@
+<div class="flex items-center justify-center">
+  <div class="flex w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
+    
+    <!-- Left: Text Logo -->
+    <div class="hidden md:flex flex-col justify-center items-center bg-blue-600 text-white w-1/2 p-10">
+      <h1 class="text-5xl font-extrabold tracking-tight">Odinbook</h1>
+      <p class="mt-4 text-lg text-blue-100 text-center">
+        Connect with your friends and the world around you.
+      </p>
+    </div>
+
+    <!-- Right: Login Form -->
+    <div class="w-full md:w-1/2 p-8">
+      <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Log in</h2>
+
+      <% if flash[:alert].present? %>
+        <div class="mb-4 text-red-600 text-sm text-center bg-red-100 p-2 rounded-md">
+          <%= flash[:alert] %>
+        </div>
+      <% end %>
+
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-4" }) do |f| %>
+        <div>
+          <%= f.label :email, class: "block font-medium mb-1 text-gray-700" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+
+        <div>
+          <%= f.label :password, class: "block font-medium mb-1 text-gray-700" %>
+          <%= f.password_field :password, autocomplete: "current-password", class: "p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="flex items-center">
+            <%= f.check_box :remember_me, class: "mr-2" %>
+            <%= f.label :remember_me, class: "text-sm font-medium text-gray-600" %>
+          </div>
+        <% end %>
+
+        <div>
+          <%= f.submit "Log in", class: "w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded-md shadow-sm" %>
+        </div>
+      <% end %>
+
+      <div class="mt-4 text-center text-sm text-gray-600">
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,15 @@
+
+<%= turbo_frame_tag dom_id(post, :like_button) do %>
+    <div class="flex flex-row gap-2">
+        <% if post.likes.exists?(user: current_user) %>
+            <%= button_to post_like_path(post, current_user.likes.find_by(post: post)), method: :delete, class: "like-button" do %>
+                <i class="fa-solid fa-heart text-red-500"></i>
+            <% end %>
+        <% else %>
+            <%= button_to post_likes_path(post_id: post.id), method: :post, class: "like-button" do %>
+                <i class="fa-regular fa-heart text-gray-400"></i>
+            <% end %>
+        <% end %>
+        <p><%= post.likes.count %></p>
+    </div>
+<% end %>

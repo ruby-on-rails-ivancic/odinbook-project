@@ -1,0 +1,4 @@
+<%= turbo_stream.replace "friend_button_#{@user.id}", partial: "users/friend_button", locals: { user: @user } %>
+
+<%#= turbo_stream.remove dom_id(@friendship, :friendship) %>
+

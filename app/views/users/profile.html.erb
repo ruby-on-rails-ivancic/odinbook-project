@@ -1,0 +1,44 @@
+<div class="flex flex-row gap-5 w-3/4">
+    <div class="flex flex-col gap-5 w-full">
+        <h1 class="font-bold text-4xl">Welcome, <%= @user.username %>!</h1>
+
+        <% if @user.profile_photo.present? %>
+            <%= image_tag @user.profile_photo, alt: "#{@user.username}'s photo", class: "rounded-full w-16 h-16" %>
+        <% else %>
+            <%= image_tag @user.gravatar_url(size: 128), alt: "#{@user.username}'s gravatar", class: "rounded-full w-32 h-32" %>
+        <% end %>
+
+        <ul class="space-y-2">
+            <li><strong>Email:</strong> <%= @user.email %></li>
+            <li><strong>Joined:</strong> <%= @user.created_at.strftime("%B %e, %Y") %></li>
+        </ul>
+        <h1 class="text-2xl font-bold">Friends</h1>
+        <% if @user.friends.exists? %>
+            <%= turbo_frame_tag "friends_list" do %>
+                <% @user.friends.each do |user| %>
+                    <div class="w-full flex flex-row justify-between bg-blue-100 px-2 py-4 rounded-sm">
+                        <%= render user  %>
+                    </div>
+                <% end %>
+            <% end %>
+        <% else %>
+            <p>No friends yet... <%= link_to "Discover new friends!", users_path, class: "hover:underline" %></p>
+        <% end %>
+        <h1 class="text-2xl font-bold">Friend Requests</h1>
+        <% if @user.all_pending_requests.any? %>
+            <% @user.all_pending_requests.each do |user|  %>
+                <%= turbo_frame_tag dom_id(user, :user) do %>
+                    <div class="flex flex-row justify-between items-center rounded-md px-4 py-4 bg-blue-100">
+                        <%= render user  %>
+                        <%= render "users/friend_button", user: user, source: "profile" %>
+                    </div>
+                <% end %>
+            <% end %>
+        <% else %>
+            <p>No pending requests... <%= link_to "Discover new friends!", users_path, class: "hover:underline" %></p>
+        <% end %>
+    </div>
+    <div>
+        <%= link_to "Edit Account Details", edit_user_registration_path %>
+    </div>
+</div>

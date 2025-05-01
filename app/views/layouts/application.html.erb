@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Odinbook Project" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="flex flex-col min-h-svh">
+    <!-- header -->
+    <header class="flex justify-between items-center p-4 bg-white shadow">
+      <h1 class="text-4xl font-bold">Odinbook</h1>
+      <% if user_signed_in? %>
+        <%= link_to "Log out", destroy_user_session_path, method: :delete, data: { turbo: false }, class: "text-black hover:underline" %>
+      <% else %>
+        <%#= link_to "Sign up", new_user_registration_path, class: "text-blue-500 hover:underline mr-4" %>
+        <%#= link_to "Log in", new_user_session_path, class: "text-blue-500 hover:underline" %>
+      <% end %>
+    </header>
+    <div class="flex flex-1 h-full">
+      <% unless devise_controller? %>
+        <!-- Sidebar -->
+        <nav class="w-64 bg-blue-50 min-h-screen px-2 py-5 z-0">
+          <ul class="space-y-2">
+            <% if user_signed_in? %>
+              <%= link_to "Feed", posts_path, class: "block w-full rounded-md px-3.5 py-2.5 bg-blue-100 hover:bg-blue-200 text-2xl text-slate-400 cursor-pointer" %>
+              <%= link_to "Profile", profile_user_path(current_user), class: "block w-full rounded-md px-3.5 py-2.5 bg-blue-100 hover:bg-blue-200 text-2xl text-slate-400 cursor-pointer" %>
+              <%= link_to "Users", users_path, class: "block w-full rounded-md px-3.5 py-2.5 bg-blue-100 hover:bg-blue-200 text-2xl text-slate-400 cursor-pointer" %>
+
+            <% end %>
+          </ul>
+        </nav>
+      <% end %>
+      <% if devise_controller? %>
+        <main class="container mx-auto mt-5 px-5 flex justify-center">
+          <%= yield %>
+        </main>      
+      <% else %>
+        <main class="container mx-auto my-5 px-5 flex">
+          <%= yield %>
+        </main>
+      <% end %>
+    </div>
+    <footer class="bg-gray-800 text-white py-6">
+      <div class="max-w-7xl mx-auto px-4 text-center">
+        <p class="text-sm">&copy; <%= Time.now.year %> Odinbook. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>

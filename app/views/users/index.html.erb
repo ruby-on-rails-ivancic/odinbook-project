@@ -1,0 +1,18 @@
+<% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+<% end %>
+<% if alert.present? %>
+    <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+<% end %>
+<div class="w-full flex flex-col gap-5">
+    <h1 class="font-bold text-4xl">All Users</h1>
+    <% @users.each do |user|%>
+        <% unless user == current_user %>
+            <div class="flex flex-row justify-between items-center bg-blue-100 w-1/2 px-4 py-4 rounded-sm">
+                <%= render user  %>
+                <%= render "users/friend_button", user: user %>
+            </div>
+        <% end %>
+
+    <% end %>
+</div>

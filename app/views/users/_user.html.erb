@@ -1,0 +1,12 @@
+
+<div class="flex flex-row justify-between items-center w-1/2 rounded-md">
+  <div class="flex flex-row items-center">
+    <% if user.profile_photo.present? %>
+        <%= image_tag user.profile_photo, alt: "#{user.username}'s photo", class: "rounded-full w-16 h-16" %>
+    <% else %>
+        <%= image_tag user.gravatar_url(size: 64), alt: "#{user.username}'s gravatar", class: "rounded-full w-16 h-16" %>
+    <% end %>
+    <p class="ml-3"><%= user.username %></p> <!-- margin-left-3 -->
+  </div>
+
+</div>

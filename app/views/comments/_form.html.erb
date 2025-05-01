@@ -1,0 +1,15 @@
+<%= turbo_frame_tag "new_comment" do %>
+  <div class="comment-form">
+    <%= form_with model: [ @post, @post.comments.build ],  data: { turbo: true }, id: "comment_form" do |form| %>
+      <p>
+        <%= form.text_area :content,
+        placeholder: "Write something nice...",
+        class: "bg-white w-full rounded-md border border-gray-300 px-2 py-2 text-sm resize-none" %>
+
+      </p>
+      <p>
+        <%= form.submit "Post Comment", class: "bg-blue-500 text-white text-xs px-3 py-2 rounded-lg"%>
+      </p>
+    <% end %>
+  </div>
+<% end %>

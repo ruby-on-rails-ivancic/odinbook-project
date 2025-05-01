@@ -1,0 +1,19 @@
+
+<%= turbo_frame_tag "friend_button_#{user.id}" do %>
+    <%# source_param = local_assigns[:source] || "index"  %>
+    <% if current_user.friends.include?(user) %>
+        <div class="flex flex-row justify-center items-center gap-3">
+            <p class="text-white bg-green-600 px-3 py-1 rounded-md">Friends</p>        
+            <%= button_to "Remove Friend", friendship_path(current_user.friendship_with(user)), method: :delete, form: { data: { turbo_stream: true } }, class: "text-sm text-white bg-red-500 px-3 py-1 rounded-md" %>
+        </div>
+    <% elsif current_user.sent_friendships.exists?(receiver_id: user.id) %>
+        <%= button_to "Cancel", friendship_path(current_user.sent_friendships.find_by(receiver_id: user.id)), method: :delete, form: { data: { turbo_stream: true } }, class: "text-sm text-white bg-red-500 px-4 py-2 rounded-md" %>
+    <% elsif current_user.received_friendships.exists?(requester_id: user.id) %>
+        <div class="flex flex-row justify-center gap-3">
+            <%= button_to "Accept", friendship_path(current_user.received_friendships.find_by(requester_id: user.id)), method: :patch, class: "text-sm bg-green-500 text-white px-3 py-1 rounded" %>
+            <%= button_to "Decline", friendship_path(current_user.received_friendships.find_by(requester_id: user.id)), method: :delete, class: "text-sm bg-red-500 text-white px-3 py-1 rounded" %>
+        </div>
+    <% else %>
+        <%= button_to "Send Friend Request", friendships_path(friendship: { receiver_id: user.id }), method: :post, form: { data: { turbo_stream: true } }, class: "text-sm text-white bg-blue-600 px-4 py-2 rounded-md" %>
+    <% end %>
+<% end %>

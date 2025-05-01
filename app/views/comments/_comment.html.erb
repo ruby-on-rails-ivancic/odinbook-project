@@ -1,0 +1,29 @@
+<div id="<%= dom_id(comment) %>" class="flex flex-row justify-start items-top rounded-md gap-3 mt-5">
+    
+        <% if comment.user.profile_photo.present? %>
+            <%= image_tag comment.user.profile_photo, alt: "#{comment.user.username}'s photo", class: "rounded-full w-16 h-16" %>
+        <% else %>
+            <%= image_tag comment.user.gravatar_url(size: 64), alt: "#{comment.user.username}'s gravatar", class: "rounded-full w-16 h-16" %>
+        <% end %>
+   
+    <div class="flex flex-col justify-start bg-blue-50 rounded-md py-2 px-4">
+        <strong><%= comment.user.username %></strong>
+        <p><%= comment.content %></p>
+                <% if current_user == comment.user %>
+        <%= link_to "Delete", [comment.post, comment], 
+                    class: "text-xs",
+                    data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                    } %>
+        <% end %>
+    </div>
+
+
+</div>
+
+
+
+
+
+
